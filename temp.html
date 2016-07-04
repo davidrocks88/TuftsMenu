@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<title>
+</title>
+</head>
+
+<body>
+<script type="text/javascript">
+
+var request = new XMLHttpRequest();
+var day = 4;
+var month = 7;
+var year = 2016;
+var hall = 'dewick'; 
+
+request.addEventListener("load", reqListener);
+
+
+request.open("GET", "https://tuftsdiningdata.herokuapp.com/menus/" + hall + '/' + day + '/' + month + '/' + year);
+
+
+request.send();
+
+var obj;
+
+function reqListener() {
+        // document.getElementById('hi').innerHTML = this.responseText;
+        obj = JSON.parse(this.responseText);
+        handleResponse(obj);
+}
+
+function handleResponse(obj) {
+        console.log(obj);
+        breakfast = obj.data.Breakfast;
+        lunch = obj.data.Lunch;
+        dinner = obj.data.Dinner;
+
+        console.log(breakfast);
+
+        for (var i = 0; i < breakfast.length; i++) {
+                console.log(breakfast[i]);
+        };
+
+
+        document.getElementById('Breakfast').innerHTML = JSON.stringify(breakfast);
+        document.getElementById('Lunch').innerHTML = JSON.stringify(lunch);
+        document.getElementById('Dinner').innerHTML = JSON.stringify(dinner);
+}
+
+</script>
+<div id='Breakfast'></div>
+<div id='Lunch'></div>
+<div id='Dinner'></div>
+
+</body>
+</html>
