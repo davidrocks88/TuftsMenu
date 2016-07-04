@@ -3,7 +3,7 @@ var request = new XMLHttpRequest();
 
 var date = new Date();
 var day = date.getDate();
-var month = date.getMonth();
+var month = date.getMonth() + 1;
 var year = date.getFullYear();
 var hall = 'dewick';
 
@@ -19,26 +19,38 @@ request.send();
 var obj;
 
 function reqListener() {
-        // document.getElementById('hi').innerHTML = this.responseText;
-        obj = JSON.parse(this.responseText);
-        handleResponse(obj);
+    obj = JSON.parse(this.responseText);
+    handleResponse(obj);
 }
 
 function handleResponse(obj) {
-        console.log(obj);
-        breakfast = obj.data.Breakfast;
-        lunch = obj.data.Lunch;
-        dinner = obj.data.Dinner;
+    breakfast = obj.data.Breakfast;
+    lunch = obj.data.Lunch;
+    dinner = obj.data.Dinner;
 
-        console.log(breakfast);
+    $("#hall").append(hall);
 
-        for (var i = 0; i < breakfast.length; i++) {
-                console.log(breakfast[i]);
-        };
- 
+    var meals = [[breakfast, "breakfast"], [lunch, "lunch"], [dinner, "dinner"]];
+    var numMeals = meals.length;
 
-        document.getElementById('Breakfast').innerHTML = JSON.stringify(breakfast);
-        document.getElementById('Lunch').innerHTML = JSON.stringify(lunch);
-        document.getElementById('Dinner').innerHTML = JSON.stringify(dinner);
+    for (var i = 0; i < numMeals; i++) {
+        parseMeal(meals[i]);
+    }
+
 }
 
+function parseMeal(meal) {
+    var mealData = meal[0];
+    var mealName = "#" + meal[1];
+    $(mealName).html("<h1>" + mealName.substring(1) + "</h1>");
+    for (var key in mealData) {
+        if (mealData.hasOwnProperty(key)) {
+            $(mealName).append("<ul>" + key + "</ul>");
+
+            var dtLength = mealData[key].length;
+            for (var i = 0; i < dtLength; i++) {
+                $(mealName).append("<li>" + mealData[key][i] + "</li>");
+            }
+        }
+    }
+}
