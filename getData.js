@@ -45,7 +45,7 @@ function load() {
 
 function getData() {
     if (ready != 4) {
-        console.log('Waiting For Server....');
+        console.log('Waiting For Server...');
         return 0;
     }
     else {
