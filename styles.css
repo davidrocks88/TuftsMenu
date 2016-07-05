@@ -4,6 +4,7 @@ body {
 }
 
 #hall {
+	margin-top: -5px;
 	font-family: 'Nixie One', sans-serif;
 	text-transform: uppercase;
 	text-align: center;
@@ -12,6 +13,31 @@ body {
 	padding-bottom: 10px;
 	color: #000;
 	border-bottom: 1px solid #2c3e50;
+}
+
+#newHall, #datepicker {
+	font-size: 16px;
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+#newHall {
+	display: block;
+	margin-left: 110px;
+	text-transform: lowercase;
+}
+
+#datepicker {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	margin: 0;
+	text-align: left;
+}
+
+.hideDates div {
+	display: none !important;
+	opacity: 1;
 }
 
 .meal ul {
@@ -41,15 +67,21 @@ body {
 	float: left;
 	width: 33%;
 	padding-bottom: 10px;
+	margin: 10px 0;
 }
 
 .meal h1 {
 	color: #000;
-	margin-bottom: 0;
+	margin: 10px 0;
 }
 
 #breakfast ul li, #lunch ul li, #dinner ul li {
 	display: block;
+}
+
+#lunch {
+	border-left: 1px solid #888;
+	border-right: 1px solid #888;
 }
 
 ul p {
@@ -78,4 +110,9 @@ ul p {
 
 .plus li {
 	display: none !important;
+}
+
+/* datepicer things */
+.ui-datepicker, .ui-datepicker-header {
+	border-radius: 0 !important;
 }

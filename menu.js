@@ -5,6 +5,7 @@ var date = new Date();
 var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
+var formattedDate = "<span id='datepicker' class='hideDates'>" + month + "/" + day + "/" + year + "</span>";
 var hall = 'dewick';
 var hiddenMenuItems = ["DELI___PANINI", "FRUIT___YOGURT", "PASTA___SAUCES",
 "SAUCES_GRAVIES___TOPPINGS", "BREADS___ROLLS",
@@ -31,7 +32,7 @@ function handleResponse(obj) {
     lunch = obj.data.Lunch;
     dinner = obj.data.Dinner;
 
-    $("#hall").append(hall);
+    $("#hall").append(hall + formattedDate + "<span id='newHall'>(carm)</span>");
 
     var meals = [[breakfast, "breakfast"], [lunch, "lunch"], [dinner, "dinner"]];
     var numMeals = meals.length;
@@ -41,12 +42,9 @@ function handleResponse(obj) {
         sortMenuOrder(meals[i]);
     }
 
-    $("p").bind("click", function() {
-        var that = $(this).parent();
-        var newClass = (that.attr("class").includes("minus")) ? "plus" : "minus";
-        $(that).attr("class", newClass);
-    });
-
+    $("#datepicker").datepicker();
+    
+    binds();
 }
 
 function parseMeal(meal) {
@@ -88,4 +86,26 @@ function sortMenuOrder(meal) {
     $(mealID).prepend($(mealID + " .VEGETARIAN_OPTIONS"));
     $(mealID).prepend($(mealClass));
     $(mealID).prepend($(mealID + " h1"));
+}
+
+function binds() {
+    // bind category-toggle
+    $("p").bind("click", function() {
+        var that = $(this).parent();
+        var newClass = (that.attr("class").includes("minus")) ? "plus" : "minus";
+        $(that).attr("class", newClass);
+    });
+
+    // bind hall-toggle
+    $("#newHall").bind("click", function() {
+        var that = $(this);
+        var newHall = $(that).text().includes("carm") ? "dewick" : "carm";
+        console.log(newHall);
+        // TODO: @XENO, requery for the newHall (acknowledging cache)
+        //       should re-execute handleResponse
+    });
+
+    $("#datepicker").bind("click", function() {
+        $(this).removeClass("hideDates");
+    });
 }
