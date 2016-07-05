@@ -6,6 +6,14 @@ var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
 var formattedDate = "<span>" + ('0' + month).slice(-2) + "/" + ('0' + day).slice(-2) + "/" + year + "</span>";
+var currTime = date.getHours();
+var activeMeal = "#breakfast";
+if (11 < currTime < 17) {
+    activeMeal = "#lunch";
+} else if (currTime >= 17) {
+    activeMeal = "#dinner";
+}
+
 var hall = 'dewick';
 var hiddenMenuItems = ["DELI___PANINI", "FRUIT___YOGURT", "PASTA___SAUCES",
 "SAUCES_GRAVIES___TOPPINGS", "BREADS___ROLLS",
@@ -44,15 +52,8 @@ function handleResponse(obj) {
         sortMenuOrder(meals[i]);
     }
 
-    $("#datepicker").datepicker({
-        onSelect: function(d) {
-            var newDate = d;
-            $(this).addClass("hideDates");
-            $("#datepicker span").text(newDate);
-            // TODO: @xeno requery for the newDate (acknowledging cache)
-        }
-    });
-    
+    $(activeMeal).addClass("activeMeal");
+
     binds();
 }
 
@@ -114,7 +115,29 @@ function binds() {
         // TODO: @XENO, requery for the newHall (acknowledging cache)
     });
 
+    // bind mobile meal-toggle
+    $(".meal h1").bind("click", function() {
+        var that = $(this).parent();
+        if ($(that).hasClass("activeMeal")) {
+            $(that).addClass("inactiveMeal");
+            $(that).removeClass("activeMeal");
+        } else {
+            $(that).addClass("activeMeal");
+            $(that).removeClass("inactiveMeal");
+        }
+    })
+
+    // bind date-picker
     $("#datepicker").bind("click", function() {
         $(this).removeClass("hideDates");
+    });
+
+    $("#datepicker").datepicker({
+        onSelect: function(d) {
+            var newDate = d;
+            $(this).addClass("hideDates");
+            $("#datepicker span").text(newDate);
+            // TODO: @xeno requery for the newDate (acknowledging cache)
+        }
     });
 }

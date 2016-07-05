@@ -125,3 +125,26 @@ ul p {
 .ui-datepicker, .ui-datepicker-header {
 	border-radius: 0 !important;
 }
+
+
+/* mobile */
+@media only screen and (min-width: 200px) and (max-width: 800px) {
+	.meal {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	.meal ul, .inactiveMeal ul {
+		display: none;
+	}
+	.activeMeal ul {
+		display: block;
+	}
+
+	.meal h1 {
+		cursor: pointer;
+	}
+	#lunch {
+		border: none;
+	}
+}
