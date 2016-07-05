@@ -1,7 +1,3 @@
-*calendar picking a different date (only in the future)*
+*ask the user if they want carm to be default dining hall, stored in local-storage, if they click the carm button*
 
-*mobile look (or do you just want an app)*
-
-*on mobile, default opening to only current meal (or maybe next if its like...4pm), and then [+] to open the other ones if user so chooses*
-
-*having it default to the curr index.html with an option to switch dining halls, and then ask the user if they want that switch to be stored in local-storage*
+*for xeno: the two things in menu.js*
