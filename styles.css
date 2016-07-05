@@ -58,7 +58,7 @@ ul p {
 	color: #34495e;
 }
 
-.plus::before, .minus::before {
+.plus p::before, .minus p::before {
 	border: 1px solid #34495e;
 	margin: 0 5px 4.5px 0;
 	line-height: .4;
@@ -66,18 +66,16 @@ ul p {
 	vertical-align: middle;
 }
 
-.minus::before {
+.minus p::before {
 	content: "-";
 	padding: 2px 3px;
 }
 
-.plus::before {
+.plus p::before {
 	content: "+";
 	padding: 2px 1px;
 }
 
-.DELI___PANINI li, .FRUIT___YOGURT li, .PASTA___SAUCES li,
-.SAUCES_GRAVIES___TOPPINGS li, .BREADS___ROLLS li,
-.BRK_BREADS_PASTRIES___TOPPINGS, .CHAR_GRILL_STATIONS li {
+.plus li {
 	display: none !important;
 }
