@@ -47,7 +47,7 @@ function parseMeal(meal) {
     for (var key in mealData) {
         if (mealData.hasOwnProperty(key)) {
             var keyName = key.replace(/[^a-zA-Z0-9+]/g, "_");
-            $(mealName).append("<ul class='" + keyName + "'>" + key + "</ul>");
+            $(mealName).append("<ul class='" + keyName + "'><p class='minus'>" + key + "</p></ul>");
 
             var dtLength = mealData[key].length;
             for (var i = 0; i < dtLength; i++) {
@@ -65,15 +65,17 @@ function sortMenuOrder(meal) {
 
     // bring non-hidden categories to top of menu
     $(mealID + " ul").each(function() {
-        var cat = $(this).attr("class");
-        if ($("." + cat + " li").css("display") !== "none") {
-            $(mealID).prepend($(this));
+        var that = this;
+        var cat = "." + $(that).attr("class");
+        if ($(cat + " li").css("display") !== "none") {
+            $(mealID).prepend($(that));
+        } else {
+            $(cat + " p").attr("class", "plus");
         }
     });
 
-    // bring main and veggie entrees to top of menu
+    // bring entrees to top of menu
     $(mealID).prepend($(mealID + " .VEGETARIAN_OPTIONS"));
     $(mealID).prepend($(mealClass));
     $(mealID).prepend($(mealID + " h1"));
-
 }
