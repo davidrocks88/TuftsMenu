@@ -5,11 +5,11 @@ var date = new Date();
 var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
-var formattedDate = "<span id='datepicker' class='hideDates'>" + month + "/" + day + "/" + year + "</span>";
+var formattedDate = "<span>" + ('0' + month).slice(-2) + "/" + ('0' + day).slice(-2) + "/" + year + "</span>";
 var hall = 'dewick';
 var hiddenMenuItems = ["DELI___PANINI", "FRUIT___YOGURT", "PASTA___SAUCES",
 "SAUCES_GRAVIES___TOPPINGS", "BREADS___ROLLS",
-"BRK_BREADS_PASTRIES___TOPPINGS", "CHAR_GRILL_STATIONS"]
+"BRK_BREADS_PASTRIES___TOPPINGS", "CHAR_GRILL_STATIONS"];
 
 
 request.addEventListener("load", reqListener);
@@ -32,7 +32,9 @@ function handleResponse(obj) {
     lunch = obj.data.Lunch;
     dinner = obj.data.Dinner;
 
-    $("#hall").append(hall + formattedDate + "<span id='newHall'>(carm)</span>");
+    $("#datepicker").append(formattedDate);
+
+    $("#hall").append("<div><span id='currHall'>" + hall + "</span><span id='newHall'>(carm)</span></div>");
 
     var meals = [[breakfast, "breakfast"], [lunch, "lunch"], [dinner, "dinner"]];
     var numMeals = meals.length;
@@ -42,7 +44,14 @@ function handleResponse(obj) {
         sortMenuOrder(meals[i]);
     }
 
-    $("#datepicker").datepicker();
+    $("#datepicker").datepicker({
+        onSelect: function(d) {
+            var newDate = d;
+            $(this).addClass("hideDates");
+            $("#datepicker span").text(newDate);
+            // TODO: @xeno requery for the newDate (acknowledging cache)
+        }
+    });
     
     binds();
 }
@@ -99,10 +108,10 @@ function binds() {
     // bind hall-toggle
     $("#newHall").bind("click", function() {
         var that = $(this);
-        var newHall = $(that).text().includes("carm") ? "dewick" : "carm";
-        console.log(newHall);
+        var newHall = $(that).text().includes("carm") ? "(dewick)" : "(carm)";
+        $("#currHall").text($(that).text().slice(1,-1));
+        $(that).text(newHall);
         // TODO: @XENO, requery for the newHall (acknowledging cache)
-        //       should re-execute handleResponse
     });
 
     $("#datepicker").bind("click", function() {
