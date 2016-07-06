@@ -3,6 +3,10 @@ body {
 	font-family: 'Josefin Slab', sans-serif;
 }
 
+.loading {
+	display: none;
+}
+
 #hall {
 	margin-top: -5px;
 	font-family: 'Nixie One', sans-serif;

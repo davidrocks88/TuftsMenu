@@ -5,7 +5,8 @@ var date = new Date();
 var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
-var formattedDate = "<span>" + ('0' + month).slice(-2) + "/" + ('0' + day).slice(-2) + "/" + year + "</span>";
+var queryDate = ('0' + day).slice(-2) + "/" + ('0' + month).slice(-2) + "/" + year;
+var formattedDate = ('0' + month).slice(-2) + "/" + ('0' + day).slice(-2) + "/" + year;
 var currTime = date.getHours();
 var activeMeal = "#breakfast";
 if (11 < currTime < 17) {
@@ -23,7 +24,7 @@ var hiddenMenuItems = ["DELI___PANINI", "FRUIT___YOGURT", "PASTA___SAUCES",
 request.addEventListener("load", reqListener);
 
 
-request.open("GET", "https://tuftsdiningdata.herokuapp.com/menus/" + hall + '/' + day + '/' + month + '/' + year);
+request.open("GET", "https://tuftsdiningdata.herokuapp.com/menus/" + hall + "/" + queryDate);
 
 
 request.send();
@@ -39,10 +40,11 @@ function handleResponse(obj) {
     breakfast = obj.data.Breakfast;
     lunch = obj.data.Lunch;
     dinner = obj.data.Dinner;
+    console.log(breakfast);
 
-    $("#datepicker").append(formattedDate);
+    $("#datepicker #date").html(formattedDate);
 
-    $("#hall").append("<div><span id='currHall'>" + hall + "</span><span id='newHall'>(carm)</span></div>");
+    $("#hall").html("<div><span id='currHall'>" + hall + "</span><span id='newHall'>(carm)</span></div>");
 
     var meals = [[breakfast, "breakfast"], [lunch, "lunch"], [dinner, "dinner"]];
     var numMeals = meals.length;
@@ -55,6 +57,8 @@ function handleResponse(obj) {
     $(activeMeal).addClass("activeMeal");
 
     binds();
+
+    $("body").removeClass("loading");
 }
 
 function parseMeal(meal) {
@@ -98,6 +102,15 @@ function sortMenuOrder(meal) {
     $(mealID).prepend($(mealID + " h1"));
 }
 
+function newReq() {
+    $("body").addClass("loading");
+    console.log(queryDate);
+    var newReq = new XMLHttpRequest();
+    newReq.addEventListener("load", reqListener);
+    newReq.open("GET", "https://tuftsdiningdata.herokuapp.com/menus/" + hall + '/' + queryDate);
+    newReq.send();
+}
+
 function binds() {
     // bind category-toggle
     $("p").bind("click", function() {
@@ -110,9 +123,8 @@ function binds() {
     $("#newHall").bind("click", function() {
         var that = $(this);
         var newHall = $(that).text().includes("carm") ? "(dewick)" : "(carm)";
-        $("#currHall").text($(that).text().slice(1,-1));
-        $(that).text(newHall);
-        // TODO: @XENO, requery for the newHall (acknowledging cache)
+        hall = $(that).text().slice(1,-1);
+        newReq();
     });
 
     // bind mobile meal-toggle
@@ -136,8 +148,9 @@ function binds() {
         onSelect: function(d) {
             var newDate = d;
             $(this).addClass("hideDates");
-            $("#datepicker span").text(newDate);
-            // TODO: @xeno requery for the newDate (acknowledging cache)
+            formattedDate = newDate;
+            queryDate = newDate.substr(3, 2)+"/"+newDate.substr(0, 2)+"/"+newDate.substr(6, 4);
+            newReq();
         }
     });
 }
