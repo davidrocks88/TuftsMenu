@@ -15,7 +15,8 @@ if (11 < currTime < 17) {
     activeMeal = "#dinner";
 }
 
-var hall = 'dewick';
+var hall = "dewick";
+var newHall = "(carm)";
 var hiddenMenuItems = ["DELI___PANINI", "FRUIT___YOGURT", "PASTA___SAUCES",
 "SAUCES_GRAVIES___TOPPINGS", "BREADS___ROLLS",
 "BRK_BREADS_PASTRIES___TOPPINGS", "CHAR_GRILL_STATIONS"];
@@ -44,7 +45,7 @@ function handleResponse(obj) {
 
     $("#datepicker #date").html(formattedDate);
 
-    $("#hall").html("<div><span id='currHall'>" + hall + "</span><span id='newHall'>(carm)</span></div>");
+    $("#hall").html("<div><span id='currHall'>" + hall + "</span><span id='newHall'>" + newHall + "</span></div>");
 
     var meals = [[breakfast, "breakfast"], [lunch, "lunch"], [dinner, "dinner"]];
     var numMeals = meals.length;
@@ -119,14 +120,6 @@ function binds() {
         $(that).attr("class", newClass);
     });
 
-    // bind hall-toggle
-    $("#newHall").bind("click", function() {
-        var that = $(this);
-        var newHall = $(that).text().includes("carm") ? "(dewick)" : "(carm)";
-        hall = $(that).text().slice(1,-1);
-        newReq();
-    });
-
     // bind mobile meal-toggle
     $(".meal h1").bind("click", function() {
         var that = $(this).parent();
@@ -144,6 +137,7 @@ function binds() {
         $(this).removeClass("hideDates");
     });
 
+    // requery on new date
     $("#datepicker").datepicker({
         onSelect: function(d) {
             var newDate = d;
@@ -152,5 +146,13 @@ function binds() {
             queryDate = newDate.substr(3, 2)+"/"+newDate.substr(0, 2)+"/"+newDate.substr(6, 4);
             newReq();
         }
+    });
+
+    // requery on new hall
+    $("#newHall").bind("click", function() {
+        var that = $(this);
+        newHall = $(that).text().includes("carm") ? "(dewick)" : "(carm)";
+        hall = $(that).text().slice(1,-1);
+        newReq();
     });
 }
