@@ -26,9 +26,11 @@ request.addEventListener("load", reqListener);
 
 
 request.open("GET", "https://tuftsdiningdata.herokuapp.com/menus/" + hall + "/" + queryDate);
-
-
 request.send();
+
+request.onreadystatechange = function() {
+    console.log(this.status);
+}
 
 var obj;
 
